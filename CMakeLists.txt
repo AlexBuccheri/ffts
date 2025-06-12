@@ -129,5 +129,9 @@ target_compile_definitions(common_flags INTERFACE HAVE_FFTW3_MPI)
 
 # Tests
 add_executable(real1d)
+add_executable(complex1d)
+
 add_subdirectory(test)
+
 target_link_libraries(real1d PRIVATE fft_proto_lib)
+target_link_libraries(complex1d PRIVATE fft_proto_lib)
