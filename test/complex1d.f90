@@ -1,3 +1,6 @@
+!> @brief 1D complex FFT forward, then backward again.
+!! y is taken from the scipy page:
+!! https://docs.scipy.org/doc/scipy/reference/generated/scipy.fft.fft.html#scipy.fft.fft
 program complex1d
   use, intrinsic :: iso_c_binding
   use, intrinsic :: iso_fortran_env
