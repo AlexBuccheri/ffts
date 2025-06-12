@@ -6,59 +6,31 @@ module fft_utils_m
 
 contains
 
-    subroutine fftfreq(n_points, spacing, x_frequencies, order)
-        integer,          intent(in ) :: n_points
-        real(real64),     intent(in ) :: spacing
-        real(real64),     intent(out) :: x_frequencies(:)
-        character(len=*), intent(in ), optional :: order !< Default is consistent with scipy ordering
+    subroutine fftfreq(n_points, spacing, x_frequencies)
+    implicit none
+    integer, intent(in)       :: n_points
+    real(real64), intent(in)  :: spacing
+    real(real64), intent(out) :: x_frequencies(:)
+    integer      :: i, midpoint
+    real(real64) :: one_over_n_dx, n_points_real
 
-        real(real64)      ::  one_over_n_dx
-        integer           :: i, j, midpoint, offset
-        character(len=10) :: ordering
- 
-        if (present(order)) then
-            ordering = order
-        else
-            ordering = ''
-        endif
+    if (n_points == 1) then
+        x_frequencies(1) = 0
+        return
+    endif
 
-        one_over_n_dx = 1.0_real64 / (real(n_points, real64) * spacing)
+    n_points_real = real(n_points, real64)
+    one_over_n_dx = 1.0_real64 / ( n_points_real * spacing )
+    midpoint = (n_points + 1) / 2
 
-        ! Note, this is probably over-engineered, as I did not bother changing
-        ! real(midpoint +1 ...) for odd N
-        if (mod(n_points, 2) == 0) then
-            ! Even
-            midpoint = n_points / 2
-            offset = 0
-            ! Could add check on size of x_frequencies
-        else
-            ! Odd
-            midpoint = (n_points -1) / 2
-            offset = 1
-            ! Could add check on size of x_frequencies
-        endif
+    do i = 1, n_points
+        x_frequencies(i) = real(i-1, real64) * one_over_n_dx
+    end do
 
-        if (trim(ordering) == 'size') then
-            ! Negative frequencies
-            do i = 1, midpoint + offset
-                x_frequencies(i) = -real(midpoint + 1 - i , real64) * one_over_N_dx
-            enddo 
-            ! Followed by positive frequencies
-            do i = 1, midpoint
-                j = i + (midpoint + offset)
-                x_frequencies(j) = real(i - 1, real64) * one_over_N_dx
-            enddo 
-        else
-            ! Positive frequencies
-            do i = 1, midpoint + offset
-                x_frequencies(i) = real(i - 1, real64) * one_over_N_dx
-            enddo 
-            ! Followed by negative frequencies
-            do i = 1, midpoint
-                j = i + (midpoint + offset)
-                x_frequencies(j) = -real(midpoint + 1 - i , real64) * one_over_N_dx
-            enddo 
-        endif
+    ! Wrap the upper half into negatives
+    do i = midpoint + 1, n_points
+        x_frequencies(i) = x_frequencies(i) - (n_points_real * one_over_n_dx)
+    end do
 
     end subroutine fftfreq
 
