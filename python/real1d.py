@@ -14,6 +14,8 @@ x = np.linspace(0.0, N*T, N, endpoint=False)
 y = np.sin(50.0 * 2.0*np.pi*x) + 0.5*np.sin(80.0 * 2.0*np.pi*x)
 
 # Forward transform
+# Note, could be using rfft, which would only output complex
+# coefficients for the positive frequencies
 yf = fft(y)
 
 # Frequencies for the forward transform

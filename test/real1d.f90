@@ -50,7 +50,7 @@ program fftw_real_example
   ! whose imaginary part is the sine‐coefficient at frequencies defined below
   write(*, *) 'Forward FFT (R2C):'
   do i = 1, size(yc)
-     ! Frequencies
+     ! Frequencies (erroneous - fix by calling routine)
      x_i = real(i - 1, real64) * one_over_N_dx
      ! Phase
      phase = atan2(aimag(yc(i)), real(yc(i))) !* rad_to_degrees
