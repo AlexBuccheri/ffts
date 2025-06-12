@@ -67,8 +67,6 @@ public :: &
   fftw_forget_wisdom, &  
   fftw_cleanup, &  
   fftw_set_timelimit, &  
-  fftw_plan_with_nthreads, &  
-  fftw_cleanup_threads, &  
   fftw_make_planner_thread_safe, &  
   fftw_export_wisdom_to_file, &  
   fftw_export_wisdom, &  
